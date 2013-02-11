@@ -1,67 +1,28 @@
- 
-import PIL 
+import PIL
 import Tkinter
-from Tkinter import *
-import Image, ImageTk
-import sys,time
+from Tkinter import*
+import Image,ImageTk
+import sys
 
-imageArgu= sys.argv[1]
+original=sys.argv[1]
+imageLoaded=Image.open(original)
+show=Tkinter.Tk()
 
-def load( imagen):    #carga la imagen adentro de la ventana
-    imageLoaded=Image.open(imagen)
-    show=Tkinter.Tk()
-    show.title("Imagen")
+def load(): 
+   # show=Tkinter.Tk()
+    show.title("Imagen de Bordes")
     tkimage=ImageTk.PhotoImage(imageLoaded)
-    Tkinter.Label(show, image=tkimage).pack()
-    b=Button(show, text="Grises",command=convertGray)
-    b2=Button(show,text="Binarizacion",command=convertBin)
-    b3=Button(show,text="blur",command=vecinity)
+    Tkinter.Label(show,image=tkimage).pack()
+    b=Button(show,text="Mostrar Bordes", command=detectarBordes)
     b.pack(fill=BOTH)
-    b2.pack(fill=BOTH)
-    b3.pack(fill=BOTH)
     show.mainloop()
-
-def convertGray(imagen=imageArgu):#convierte la imagen en escala de grises
-    t0=time.clock()
-    imagen2=Image.open(imagen)
-    pixels=imagen2.load()
-    width,height=imagen2.size
-    for i in range(width):
-        for j in range(height):
-            r,g,b=pixels[i,j]#toma el valor del pixel actual
-            gray=int((r+g+b)/3)#saca el promedio para la escala de grises
-            pixels[i,j]=(gray,gray,gray)#lo reemplaza
-    t1=time.clock()
-    tiempo=t1-t0
-    print tiempo
-    imagen2.save('zeldaGrises.jpg')
-    imagen2.show()
-
-
-def convertBin(image=imageArgu):#convierte la imagen binarizada
-    imagen=Image.open(image)
-    pixels=imagen.load()
-    width,height=imagen.size
-    for i in range(width):
-        for j in range(height):
-            r,g,b=pixels[i,j]
-            gray=int((r+g+b)/3)#despues de tomarla en escala de grises
-            if(gray<127):#si el valor de gris es mayor a 127
-                pixels[i,j]=(0,0,0)# el pixel sera negro
-            else:
-                pixels[i,j]=(255,255,255)#si no sera blanco
-    imagen.save('zeldaUmbral.jpg')
-    imagen.show()
-
-def vecinity(image=imageArgu):
     
- 
-    imagen=Image.open(image)
-    pixels=imagen.load()
-    width,height=imagen.size
-    howmany=raw_input("cuantos filtros quieres?: ")
-    filtros=int(howmany)
-    for w in range(filtros):
+def detectarBordes():
+#primero lo paso a grises
+    pixels=imageLoaded.load()
+    width,height=imageLoaded.size
+    #despues pasara por varios filtros
+    for w in range(1):
         for i in range(width):
             for j in range(height):
                 r,g,b=pixels[i,j]
@@ -134,19 +95,36 @@ def vecinity(image=imageArgu):
                         newPix=255
                         
                     pixels[i,j]=(newPix,newPix,newPix)#se reemplaza
-                        
- 
- 
-    imagen.save('zeldaFiltro.jpg')
-    imagen.show()
-            
+                    
+    aplicarMascara(imageLoaded)
+
+
+def aplicarMascara(imagen):
+    mascaraX= [[0,1,0],[1,-4,1],[0,1,0]]
+    mascaraY= [[1,1,1], [0,0,0],[-1,-1,-1]]
+    pixels=imagen.load()
+    wid,hei=imagen.size 
+    for i in range(wid):
+        for j in range(hei):
+            if (i > 0 and i < wid-1 and j > 0 and j < hei-1):
+                ra,ga,ba=pixels[i-1,j-1]
+                rb,gb,bb=pixels[i-1,j]
+                rc,gc,bc=pixels[i-1,j+1]
+                rd,gd,bd=pixels[i,j-1]
+                re,ge,be=pixels[i,j]
+                rf,gf,bf=pixels[i,j+1]
+                rg,gg,bg=pixels[i+1,j-1]
+                rh,gh,bh=pixels[i+1,j]
+                ri,gi,bi=pixels[i+1,j+1]
+                matrizDePixeles=[[ra,rb,rc],[rd,re,rf],[rg,rh,ri]]
+                newPix = (ra*mascaraX[0][0])+(rb*mascaraX[0][1])+(rc*mascaraX[0][2])+(rd*mascaraX[1][0])+(re*mascaraX[1][1])+(rf*mascaraX[1][2])+(rg*mascaraX[2][0])+(rh*mascaraX[2][1])+(ri*mascaraX[2][2])
+                pixels[i,j] = (newPix,newPix,newPix)
                 
-
-def main():
-    load(imageArgu)
+            else:
+                None
+                
+    imagen.show()
     
+def main():
+    load()
 main()
-
-
-        
-
