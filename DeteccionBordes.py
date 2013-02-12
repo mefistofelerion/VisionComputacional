@@ -75,7 +75,7 @@ def aplicarMascara(imagen):
                 rh,gh,bh=pixels[i+1,j]
                 ri,gi,bi=pixels[i+1,j+1]
                 matrizDePixeles=[[ra,rb,rc],[rd,re,rf],[rg,rh,ri]]#los valores de los pixeles vecinos los pongo adentro de una matriz
-                #saco el promedio del nuevo pixel
+                #hago la suma para el nuevo pixel
                 newPix = (ra*mascaraX[0][0])+(rb*mascaraX[0][1])+(rc*mascaraX[0][2])+(rd*mascaraX[1][0])+(re*mascaraX[1][1])+(rf*mascaraX[1][2])+(rg*mascaraX[2][0])+(rh*mascaraX[2][1])+(ri*mascaraX[2][2])
                 #el nuevo pixel lo ingreso en la nueva imagen
                 pix[i,j] = (newPix,newPix,newPix)
