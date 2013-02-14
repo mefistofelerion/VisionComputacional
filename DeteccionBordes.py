@@ -80,51 +80,51 @@ def aplicarMascara(imagen):
                 #el nuevo pixel lo ingreso en la nueva imagen
                 pix[i,j] = (newPix,newPix,newPix)
                 
-            else:#detecta todo los bordes
+                '''            else:#detecta todo los bordes
                 if(i == 0 and j>0):
-                    ra,ga,ba=pixels[i,j-1]
-                    rb,gb,bb=pixels[i,j]
-                    rc,gc,bc=pixels[i,j+1]
-                    rd,gd,bd=pixels[i+1,j-1]
-                    re,ge,be=pixels[i+1,j]
-                    rf,gf,bf=pixels[i+1,j+1]
-                    matrizDePixeles=[[0,ra,rd],[0,rb,re],[0,rc,rf]]
-                    newPix = (ra*mascaraX[0][1])+(rb*mascaraX[1][1])+(rc*mascaraX[2][1])+(rd*mascaraX[0][2])+(re*mascaraX[1][2])+(rf*mascaraX[2][2])
-                    pix[i,j]=(newPix,newPix,newPix)
+                ra,ga,ba=pixels[i,j-1]
+                rb,gb,bb=pixels[i,j]
+                rc,gc,bc=pixels[i,j+1]
+                rd,gd,bd=pixels[i+1,j-1]
+                re,ge,be=pixels[i+1,j]
+                rf,gf,bf=pixels[i+1,j+1]
+                matrizDePixeles=[[0,ra,rd],[0,rb,re],[0,rc,rf]]
+                newPix = (ra*mascaraX[0][1])+(rb*mascaraX[1][1])+(rc*mascaraX[2][1])+(rd*mascaraX[0][2])+(re*mascaraX[1][2])+(rf*mascaraX[2][2])
+                pix[i,j]=(newPix,newPix,newPix)
                 if(i== wid and j>0):
-                    ra,ga,ba=pixels[i,j-1]
-                    rb,gb,bb=pixels[i,j]
-                    rc,gc,bc=pixels[i,j+1]
-                    rd,gd,bd=pixels[i-1,j-1]
-                    re,ge,be=pixels[i-1,j]
-                    rf,gf,bf=pixels[i-1,j+1]
-                    matrizDePixeles=[[rd,ra,0],[re,rb,0],[rf,rc,0]]
-                    newPix = (ra*mascaraX[0][1])+(rb*mascaraX[1][1])+(rc*mascaraX[2][1])+(rd*mascaraX[0][0])+(re*mascaraX[1][0])+(rf*mascaraX[2][0])
-                    pix[i,j]=(newPix,newPix,newPix)
+                ra,ga,ba=pixels[i,j-1]
+                rb,gb,bb=pixels[i,j]
+                rc,gc,bc=pixels[i,j+1]
+                rd,gd,bd=pixels[i-1,j-1]
+                re,ge,be=pixels[i-1,j]
+                rf,gf,bf=pixels[i-1,j+1]
+                matrizDePixeles=[[rd,ra,0],[re,rb,0],[rf,rc,0]]
+                newPix = (ra*mascaraX[0][1])+(rb*mascaraX[1][1])+(rc*mascaraX[2][1])+(rd*mascaraX[0][0])+(re*mascaraX[1][0])+(rf*mascaraX[2][0])
+                pix[i,j]=(newPix,newPix,newPix)
                 if(j==0 and i>0):
-                    ra,ga,ba=pixels[i-1,j]
-                    rb,gb,bb=pixels[i,j]
-                    rc,gc,bc=pixels[i+1,j]
-                    rd,gd,bd=pixels[i-1,j+1]
-                    re,ge,be=pixels[i-1,j+1]
-                    rf,gf,bf=pixels[i-1,j+1]
-                    matrizDePixeles=[[0,0,0],[ra,rb,rc],[rd,re,rf]]
-                    newPix = (ra*mascaraX[1][0])+(rb*mascaraX[1][1])+(rc*mascaraX[1][2])+(rd*mascaraX[2][0])+(re*mascaraX[2][1])+(rf*mascaraX[2][2])
-                    pix[i,j]=(newPix,newPix,newPix)
-
+                ra,ga,ba=pixels[i-1,j]
+                rb,gb,bb=pixels[i,j]
+                rc,gc,bc=pixels[i+1,j]
+                rd,gd,bd=pixels[i-1,j+1]
+                re,ge,be=pixels[i-1,j+1]
+                rf,gf,bf=pixels[i-1,j+1]
+                matrizDePixeles=[[0,0,0],[ra,rb,rc],[rd,re,rf]]
+                newPix = (ra*mascaraX[1][0])+(rb*mascaraX[1][1])+(rc*mascaraX[1][2])+(rd*mascaraX[2][0])+(re*mascaraX[2][1])+(rf*mascaraX[2][2])
+                pix[i,j]=(newPix,newPix,newPix)
+                
                 if(j==hei and i>0):
-                    ra,ga,ba=pixels[i-1,j]
-                    rb,gb,bb=pixels[i,j]
-                    rc,gc,bc=pixels[i+1,j]
-                    rd,gd,bd=pixels[i-1,j-1]
-                    re,ge,be=pixels[i-1,j-1]
-                    rf,gf,bf=pixels[i-1,j-1]
-                    matrizDePixeles=[[rd,re,rf],[ra,rb,rc],[0,0,0]]
-                    newPix = (ra*mascaraX[1][0])+(rb*mascaraX[1][1])+(rc*mascaraX[1][2])+(rd*mascaraX[0][0])+(re*mascaraX[0][1])+(rf*mascaraX[0][2])
-                    pix[i,j]=(newPix,newPix,newPix)
-                    
-
-
+                ra,ga,ba=pixels[i-1,j]
+                rb,gb,bb=pixels[i,j]
+                rc,gc,bc=pixels[i+1,j]
+                rd,gd,bd=pixels[i-1,j-1]
+                re,ge,be=pixels[i-1,j-1]
+                rf,gf,bf=pixels[i-1,j-1]
+                matrizDePixeles=[[rd,re,rf],[ra,rb,rc],[0,0,0]]
+                newPix = (ra*mascaraX[1][0])+(rb*mascaraX[1][1])+(rc*mascaraX[1][2])+(rd*mascaraX[0][0])+(re*mascaraX[0][1])+(rf*mascaraX[0][2])
+                pix[i,j]=(newPix,newPix,newPix)
+                '''
+                
+                
 
     return nuevaImagen
     
