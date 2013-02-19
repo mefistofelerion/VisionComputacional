@@ -1,0 +1,73 @@
+import PIL
+import Tkinter
+from Tkinter import *
+import Image,ImageTk
+import sys,random,time
+
+imageArgument=sys.argv[1]
+
+def load(imagen):
+    imageLoaded=Image.open(imagen)
+    show=Tkinter.Tk()
+    show.title("Imagen")
+    tkimage=ImageTk.PhotoImage(imageLoaded)
+    Tkinter.Label(show,image=tkimage).pack()
+    b=Button(show,text="Ponerle \" sal pimienta\"",command=ponerPimienta)
+    b2=Button(show,text="Quitarle manchas",command=eliminarManchas)
+    b.pack(fill=BOTH)
+    b2.pack(fill=BOTH)
+    show.mainloop()
+
+def ponerPimienta(imagen=imageArgument):
+    imagenParaProcesar=Image.open(imagen)
+    pixels=imagenParaProcesar.load()
+    width,height=imagenParaProcesar.size
+    print width, height
+    for i in range (width):
+        for j in range(height):
+            '''
+            valorPimienta=random.randint(1,500)
+            if(valorPimienta==350):
+            negro=random.randint(0,10)
+            pixels[i,j] = (2,2,2)
+            
+            if(valorPimienta==123):
+            blanco=random.randint(200,255)
+            pixels[i,j]=(255,255,255)
+            '''
+            pass
+
+    rp,gp,bp=pixels[200,300]=((0,10,20))
+    
+    imagenParaProcesar.show()
+    imagenParaProcesar.save("imagenConManchas.jpg")
+
+def eliminarManchas():
+    imagenManchada=Image.open("imagenConManchas.jpg")
+    pix=imagenManchada.load()
+    w,h= imagenManchada.size
+    print w,h
+    for i in range(w):
+        for j in range(h):
+            if(i>0 and i < w-1 and j>0 and j < h-1):
+                r,g,b=pix[i,j]#toma el valor d grises del pixel actual
+                rgb=(r,g,b)
+                r1,g1,b1=pix[i+1,j]#toma cada uno de los pixeles vecinos
+                r2,g2,b2=pix[i-1,j]#y saca el promedio
+                r3,g3,b3=pix[i,j-1]
+                r4,g4,b4=pix[i,j+1]
+                newPix=(((r1+g1+b1)/3)+((r2+g2+b2)/3)+((r3+g3+b3)/3)+((r4+g4+b4)/3))/4
+
+                
+                if(i==199 and j==299):
+                    print rgb
+                if (rgb==(0,10,20)):
+                    print rgb
+                    print newPix,i,j
+                pix[200,300]=(newPix,newPix,newPix)
+    imagenManchada.show()
+
+def main():
+    load(imageArgument)
+
+main()
