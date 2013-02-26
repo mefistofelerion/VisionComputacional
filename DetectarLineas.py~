@@ -1,0 +1,108 @@
+import PIL
+import Tkinter
+from Tkinter import*
+import Image,ImageTk
+import sys,time
+from math import sin,cos,sqrt
+
+
+original=Image.open("ecuadrado.png")
+def load():
+    imageLoaded=Image.open("ecuadrado.png")
+    show=Tkinter.Tk()
+    show.title("Deteccion de Lineas")
+    tkimage=ImageTk.PhotoImage(imageLoaded)
+    Tkinter.Label(show,image=tkimage).pack()
+    b=Button(show,text="Mostrar Lineas", command=detectarLineas)
+    b.pack(fill=BOTH)
+    show.mainloop()
+
+def detectarLineas():
+    gradienteX=Image.open("gradientex.png")
+    gradienteY=Image.open("gradientey.png")
+    gx=convolucion(gradienteX)
+    gy=convolucion(gradienteY)
+    hough_transform(gx,gy)
+
+
+
+def convolucion(im):
+
+    pixeles=im.load()
+    w,h=im.size
+    resultado=list()
+
+    for i in range(w):
+        fila=list()
+        for j in range(h):
+            valor=pixeles[i,j]
+            fila.append(valor)
+        resultado.append(fila)
+        
+    return resultado
+
+
+
+def hough_transform(gradx,grady):
+    
+    gx = gradx
+    gy = grady
+    matrix = []
+    combination = {}
+    angles = []
+    
+    w=len(gx[0])
+    h=len(gx)
+    print w,h
+    for i in range(w):
+        tmp = list()
+        for j in range(h):
+            x = gx[i, j][0]
+            y = gy[i, j][0]
+            theta = 0.0
+            if abs(x) + abs(y) <= 0.0:
+                theta = None
+            elif x == 0 and y == 255:
+                theta = 90
+            else:
+                theta = math.degrees(abs(y/x))
+            if theta is not None:
+                rho = abs((i) * math.cos(theta) + (j) * math.sin(theta))
+                if not theta in angles:  angles.append(theta)
+                if i > 0 and i < w-1 and j > 0 and j < h - 1:
+                    if (rho, theta) in combination:
+                        combination[(rho, theta)] += 1
+                    else:
+                        combination[(rho, theta)] = 1
+                tmp.append((rho, theta))
+            else:
+                tmp.append((None, None))
+        matrix.append(tmp)
+    print angles
+    combination = sort_dictionary(combination)
+    n = int(math.ceil(len(combination) * umb))
+    frec = {}
+    for i in range(n):
+        (rho, theta) = combination[i][0]
+        frec[(rho, theta)] = combination[1]
+    pix = im.load()
+    for i in range(w):
+        for j in range(h):
+            if i > 0 and j > 0 and i < w and j < h:
+                rho, theta = matrix[i][j]
+                if (rho, theta) in frec:
+                    if theta == 0:
+                        pix[i, j] = (255, 0, 0)
+                    elif theta == 90:
+                        pix[i, j] = (0, 0, 255)
+    im.save('output.png', 'png')
+    return im
+
+
+
+def main():
+    load()
+main()
+    
+
+    

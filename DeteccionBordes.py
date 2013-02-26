@@ -26,7 +26,7 @@ def detectarBordes():
     width,height=imageLoaded.size
     for i in range(width):
         for j in range(height):
-            r,g,b=pixels[i,j]#toma el valor del pixel actual
+            r,g,b =pixels[i,j]#toma el valor del pixel actual
             gray=int((r+g+b)/3)#saca el promedio para la escala de grises
             pixels[i,j]=(gray,gray,gray)#lo reemplaza
           
@@ -38,7 +38,7 @@ def detectarBordes():
     tiempoEjecucion=final-inicio #una simple resta para saber el tiempo total de ejecucion
     print tiempoEjecucion
     imagenConMascara.show()
-    imagenConMascara.save("imagenBordes.jpg")
+    imagenConMascara.save("imagenBordes.png",format="PNG")
 
 def aplicarMascara(imagen):
 
@@ -57,7 +57,11 @@ def aplicarMascara(imagen):
         mascaraX=[[-1,0,1],[-2,0,2],[-1,0,1]]
     if(mascara==6):
         mascaraX=[[0,1,0],[1,-4,1],[0,1,0]]
-    
+    if(mascara==7):
+	mascaraX=[[-1,0,1],[-2,0,2],[-1,0,1]]
+    if(mascara==8):
+	mascaraX=[[1,2,1],[0,0,0],[-1,-2,-1]]
+
     pixels=imagen.load()
     nuevaImagen=Image.open(original)#nueva imagen con los bordes resaltados
     pix=nuevaImagen.load()
