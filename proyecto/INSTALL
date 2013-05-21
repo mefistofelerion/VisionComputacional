@@ -1,0 +1,56 @@
+Para utilizar este software es necesario instalar la version mas actual de OpenCV, en este documento utilizaremos el 2.4.1 en ubuntu 12.04 
+primero se hace una actualizacion de los repositorios de ubuntu con los siguientes comandos:
+
+sudo apt-get update
+
+despues se actualiza los paquetes desactualizados en ubuntu:
+
+sudo apt-get upgrade
+
+Despues para poder hacer uso de opencv se necesitan instalar dependencias, tales como las de lectura y escritura de imagenes, dibujar en pantalla entre otras herramientas utiles para esto en la consola introducimos el siguiente comando:
+
+sudo apt-get install build-essential libgtk2.0-dev libjpeg-dev libtiff4-dev libjasper-dev libopenexr-dev cmake python-dev python-numpy python-tk libtbb-dev libeigen2-dev yasm libfaac-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev libx264-dev libqt4-dev libqt4-opengl-dev sphinx-common texlive-latex-extra libv4l-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev
+
+despues necesitamos descargar OpenCV utilizando:
+
+wget http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.4.1/OpenCV-2.4.1.tar.bz2
+#necesitaremos descomprimirlo con:
+tar -xvf OpenCV-2.4.1.tar.bz2
+cd OpenCV-2.4.1
+
+Despues necesitaremos compilar la libreria con cmake, ya que este programa esta hecho en python haremos una compilacion con los siguientes configuraciones en el comando:
+
+mkdir build
+cd build
+
+cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+
+ahora proceder a compilar 
+
+make
+sudo make install
+y esperar a que se compile
+
+despues se necesita configurar el archivo para poder usar las librerias
+
+sudo gedit /etc/ld.so.conf.d/opencv.conf
+
+y se agrega esta linea al ultimo del archivo y se salva:
+/usr/local/lib
+
+ahora despues se configura la libreria con la siguiente linea:
+
+sudo ldconfig
+
+ahora se abre otro archivo 
+
+sudo gedit /etc/bash.bashrc
+
+y agregar estas lineas al final despues grabar
+
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+export PKG_CONFIG_PATH
+
+ahora opencv esta listo para utilizarse, por ultimo se pueden ejecutar los ejemplos que vienen en la carpeta de OpenCV-2.4.1/samples/python
+para ver si funciona bien.
+
